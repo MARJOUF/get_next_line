@@ -6,16 +6,23 @@
 /*   By: akmarjou <akmarjou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/06 17:47:30 by akmarjou          #+#    #+#             */
-/*   Updated: 2026/11/09 22:08:13 by akmarjou         ###   ########.fr       */
+/*   Updated: 2026/11/12 15:13:48 by akmarjou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *ft_overwrite(char *stash)
+char *ft_free(char *stash, char *buffer)
 {
-    int i;
+    free(stash);
+    free(buffer);
+    return (NULL);
+}
+
+char *ft_new_stash(char *stash)
+{
     int j;
+    int i;
 
     i = 0;
     j = 0;
@@ -25,36 +32,35 @@ char *ft_overwrite(char *stash)
     {
         free(stash);
         stash = NULL;
-        return (NULL);
+        return (NULL);    
     }
     i++;
-    while(stash[i])
+    while (stash[i])
         stash[j++] = stash[i++];
     if (j == 0)
     {
         free(stash);
-        return (NULL);
+        stash = NULL;
+        return (NULL);        
     }
     stash[j] = '\0';
     return (stash);
 }
 
-int ft_strchr(char *str)
+char *ft_get_line(char *str, char n)
 {
     int i;
-    
+
     i = 0;
     if (!str)
-        return (0);
+        return (NULL);
     while (str[i])
     {
-        if(str[i] == '\n')
-        {
-            return (1);
-        }
+        if (str[i] == n)
+            return (&str[i]);
         i++;
     }
-    return 0;
+    return (NULL);
 }
 
 int ft_strlen(char *str)
@@ -69,33 +75,26 @@ int ft_strlen(char *str)
     return (i);
 }
 
-char *ft_join(char *s1, char *s2)
+char *ft_str_join(char *s1, char *s2)
 {
-    char *new_str;
+    char *ar;
+    int line_s2;
+    int line_s1;
     int i;
-    int a;
-    int len;
-
+    int j;
+    
     i = 0;
-    a = 0;
-    len = ft_strlen(s1);
-    new_str = malloc(len + ft_strlen(s2) + 1);
-    if (new_str == NULL)
+    j = 0;
+    line_s2 = ft_strlen(s2);
+    line_s1 = ft_strlen(s1);
+    ar = malloc((line_s1 + line_s2) + 1);
+    if(!ar)
         return (NULL);
-    while (i < len)
-    {
-        new_str[a] = s1[i];
-        a++;
-        i++;
-    }
-    i = 0;
-    while (s2[i])
-    {
-        new_str[a] = s2[i];
-        a++;
-        i++;
-    }
-    new_str[a] = '\0';
-    free(s1);
-    return (new_str);
+    while (i < line_s1)
+        ar[i++] = s1[j++];
+    j = 0;
+    while (s2[j])
+        ar[i++] = s2[j++];
+    ar[i] = '\0';
+    return (ar);
 }

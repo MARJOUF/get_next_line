@@ -1,34 +1,29 @@
-/* ************************************************************************** */
+ /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akmarjou <akmarjou@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+// /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/06 17:46:48 by akmarjou          #+#    #+#             */
-/*   Updated: 2026/11/09 22:26:15 by akmarjou         ###   ########.fr       */
+/*   Updated: 2026/11/11 17:30:06 by akmarjou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char *ft_append(char *stash, char *buffer)
+static char *ft_join(char *stash, char *buffer)
 {
-    char *temp;
+    char *tmp;
 
-    temp = NULL;
-    temp = ft_join(stash, buffer);
-    if (!temp)
-    {
-        free(stash);
-        free(buffer);
-        return (NULL);
-    }
+    tmp = NULL;
+    tmp = ft_str_join(stash, buffer);
     free(buffer);
-    return (temp);
+    free(stash);
+    return (tmp);
 }
 
-static char *ft_read(int fd, char *stash, ssize_t *a)
+static char *ft_read(char *stash, int fd, ssize_t *a)
 {
     char *buffer;
 
@@ -41,15 +36,11 @@ static char *ft_read(int fd, char *stash, ssize_t *a)
     }
     *a = read(fd, buffer, BUFFER_SIZE);
     if (*a == -1)
-    {
-        free(buffer);
-        free(stash);
-        return (NULL);
-    }  
+        return (ft_free(stash, buffer));
     if (*a > 0)
     {
         buffer[*a] = '\0';
-        stash = ft_append(stash, buffer);
+        stash = ft_join(stash, buffer);
         if (!stash)
             *a = -1;
     }
@@ -58,26 +49,23 @@ static char *ft_read(int fd, char *stash, ssize_t *a)
     return (stash);
 }
 
-static char *ft_line(int fd, char *stash)
+static char *ft_stash(char *stash, int fd)
 {
     ssize_t a;
-    int j;
 
     a = 1;
-    j = 0;
-    if (ft_strchr(stash))
+    if (ft_get_line(stash, '\n'))
         return (stash);
     while (a > 0)
     {
-        stash = ft_read(fd, stash, &a);
-        j = ft_strchr(stash);
-        if (j == 1)
-            break ;
+        stash = ft_read(stash, fd, &a);
+        if (ft_get_line(stash, '\n'))
+            break;
     }
     return (stash);
 }
 
-static char *ft_extract_line(char *stash)
+static char *ft_line(char *stash)
 {
     char *line;
     int i;
@@ -107,23 +95,23 @@ char *get_next_line(int fd)
 {
     static char *stash;
     char *line;
-    
+
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
-    stash = ft_line(fd, stash);
+    stash = ft_stash(stash, fd);
     if (!stash)
     {
         free(stash);
-        stash = NULL; 
+        stash = NULL;
         return (NULL);
     }
-    line = ft_extract_line(stash);
+    line = ft_line(stash);
     if (!line)
     {
         free(stash);
         stash = NULL;
         return (NULL);
     }
-    stash = ft_overwrite(stash);
+    stash = ft_new_stash(stash);
     return (line);
 }
