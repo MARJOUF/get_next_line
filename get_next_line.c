@@ -6,7 +6,7 @@
 /*   By: akmarjou <akmarjou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/13 15:53:11 by akmarjou          #+#    #+#             */
-/*   Updated: 2026/11/13 16:31:51 by akmarjou         ###   ########.fr       */
+/*   Updated: 2026/11/13 18:38:54 by akmarjou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char *ft_get_read(char *stash, int fd, ssize_t *a)
 {
     char *buffer;
     
-    buffer = malloc(BUFFER_SIZE + 1);
+    buffer = malloc((size_t)BUFFER_SIZE + 1);
     if (!buffer)
         return (ft_free(stash));
     *a = read(fd, buffer, BUFFER_SIZE);
@@ -92,7 +92,6 @@ char *get_next_line(int fd)
     a = 1;
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
-    
     while (a > 0)
     {
         if (ft_strchr(stash, '\n'))

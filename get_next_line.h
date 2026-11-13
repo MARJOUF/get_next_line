@@ -6,7 +6,7 @@
 /*   By: akmarjou <akmarjou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/06 17:47:18 by akmarjou          #+#    #+#             */
-/*   Updated: 2026/11/13 16:26:19 by akmarjou         ###   ########.fr       */
+/*   Updated: 2026/11/13 18:44:42 by akmarjou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 #include <stdio.h>
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1000
+# define BUFFER_SIZE 1
 #endif
 
 char *get_next_line(int fd);
-char *ft_get_join(char *stash, char *buffer);
+char *ft_join(char *stash, char *buffer);
 char *ft_get_read(char *stash, int fd, ssize_t *a);
 char *ft_get_one_line(char *stash);
 char *ft_free(char *stash);
