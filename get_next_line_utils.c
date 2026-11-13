@@ -6,24 +6,17 @@
 /*   By: akmarjou <akmarjou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/06 17:47:30 by akmarjou          #+#    #+#             */
-/*   Updated: 2026/11/12 15:13:48 by akmarjou         ###   ########.fr       */
+/*   Updated: 2026/11/13 16:31:47 by akmarjou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *ft_free(char *stash, char *buffer)
+char *ft_get_new_stash(char *stash)
 {
-    free(stash);
-    free(buffer);
-    return (NULL);
-}
-
-char *ft_new_stash(char *stash)
-{
-    int j;
     int i;
-
+    int j;
+    
     i = 0;
     j = 0;
     while (stash[i] && stash[i] != '\n')
@@ -32,7 +25,7 @@ char *ft_new_stash(char *stash)
     {
         free(stash);
         stash = NULL;
-        return (NULL);    
+        return (NULL);
     }
     i++;
     while (stash[i])
@@ -41,13 +34,13 @@ char *ft_new_stash(char *stash)
     {
         free(stash);
         stash = NULL;
-        return (NULL);        
+        return (NULL);
     }
     stash[j] = '\0';
     return (stash);
 }
 
-char *ft_get_line(char *str, char n)
+char *ft_strchr(char *str, char c)
 {
     int i;
 
@@ -56,14 +49,14 @@ char *ft_get_line(char *str, char n)
         return (NULL);
     while (str[i])
     {
-        if (str[i] == n)
+        if (str[i] == c)
             return (&str[i]);
         i++;
     }
     return (NULL);
 }
 
-int ft_strlen(char *str)
+int ft_get_strline(char *str)
 {
     int i;
 
@@ -73,28 +66,29 @@ int ft_strlen(char *str)
     while (str[i])
         i++;
     return (i);
+    
 }
 
-char *ft_str_join(char *s1, char *s2)
-{
-    char *ar;
-    int line_s2;
-    int line_s1;
+char *ft_get_join(char *s1, char *s2)
+{  
+    char *arr;
+    int len_s1;
+    int len_s2;
     int i;
     int j;
-    
+
     i = 0;
     j = 0;
-    line_s2 = ft_strlen(s2);
-    line_s1 = ft_strlen(s1);
-    ar = malloc((line_s1 + line_s2) + 1);
-    if(!ar)
+    len_s1 = ft_get_strline(s1);
+    len_s2 = ft_get_strline(s2);
+    arr = malloc((len_s1 + len_s2) + 1);
+    if (!arr)
         return (NULL);
-    while (i < line_s1)
-        ar[i++] = s1[j++];
+    while (i < len_s1)
+        arr[i++] = s1[j++];
     j = 0;
     while (s2[j])
-        ar[i++] = s2[j++];
-    ar[i] = '\0';
-    return (ar);
+        arr[i++] = s2[j++];
+    arr[i] = '\0';
+    return (arr);
 }
